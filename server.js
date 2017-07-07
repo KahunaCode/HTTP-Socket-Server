@@ -5,6 +5,17 @@ const fs = require('fs');
 
 let htmlPages = ["index.html", "helium.html", "hydrogen.html", "css/styles.css"];
 
+function timeNow(){
+    var currentDate = new Date();
+    var day = currentDate.getDate();
+    var month = currentDate.getMonth() + 1;
+    var year = currentDate.getFullYear();
+    var hour = currentDate.getHours();
+    var min = currentDate.getMinutes();
+    var sec = currentDate.getSeconds();
+    return day +"/"+ month+ "/" + year + " " + hour + ":" + min + ":" + sec;
+}
+
 const server = net.createServer((c) => {
   console.log(c.remoteAddress + " " + c.remotePort + " client connectedn\n");
 
@@ -22,14 +33,14 @@ const server = net.createServer((c) => {
     var page = fs.readFile(uri, (err, data) => {
       //console.log(data.toString());
       if (err) throw err;
-      c.write("HTTP/1.1 200 OK\n Server: nginjames/1.4.6 (Macbuntu)\n Date: Wed, 05 Jul 2017 22:32:15 GMT\n Content-Type: text/html; charset=utf-8\n Content-Length: 40489\n Connection: keep-alive"+"\n\n"+data.toString());
+      c.write(`HTTP/1.1 200 OK\n Server: nginjames/1.3.13 (Macbuntu)\n Date: ${timeNow()} local-time\n Content-Type: text/html; charset=utf-8\n Content-Length: 40489\n Connection: keep-alive\n\n ${data.toString()}`);
       c.destroy();
     });
   }
   else{
     console.log("oh sht 404");
     var fourOhFour = fs.readFile("404.html", (err, data) => {
-      c.write("HTTP/1.1 200 OK\n Server: nginjames/1.4.6 (Macbuntu)\n Date: Wed, 05 Jul 2017 22:32:15 GMT\n Content-Type: text/html; charset=utf-8\n Content-Length: 40489\n Connection: keep-alive"+"\n\n"+data.toString());
+      c.write(`HTTP/1.1 200 OK\n Server: nginjames/1.3.13 (Macbuntu)\n Date: ${timeNow()} local-time\n Content-Type: text/html; charset=utf-8\n Content-Length: 40489\n Connection: keep-alive\n\n ${data.toString()}`);
       c.destroy();
     });
   }
