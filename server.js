@@ -12,7 +12,7 @@ const server = net.createServer((c) => {
   c.on('data', function(data) {
     process.stdout.write(data);
 
-  //socket.write("HTTP/1.1 200 OK");
+  c.write("HTTP/1.1 200 OK, Server: nginx/1.4.6 (Ubuntu), Date: Wed, 05 Jul 2017 22:32:15 GMT Content-Type: text/html; charset=utf-8, Content-Length: 40489, Connection: keep-alive");
   });
 
   c.on('end', () => {
