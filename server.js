@@ -18,7 +18,7 @@ function timeNow(){
 
 
 const server = net.createServer((c) => {
-  console.log(c.remoteAddress + " " + c.remotePort + " client connectedn\n");
+  console.log(c.remoteAddress + " " + c.remotePort + " client connected\n");
 
   c.on('data', function(data) {
     process.stdout.write(data);
