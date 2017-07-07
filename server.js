@@ -11,6 +11,11 @@ const server = net.createServer((c) => {
   c.on('data', function(data) {
     process.stdout.write(data);
     let uri = data.toString().split('\n')[0].split(' ')[1].slice(1);//data buffer to string, split new lines, split on space, then remove '/'
+
+    //if uri is blank, aka 8080, redir them to index.html
+    if (!uri){
+      uri = "index.html";
+    }
     console.log("uri is", uri);
 
   if (htmlPages.includes(uri)) {
