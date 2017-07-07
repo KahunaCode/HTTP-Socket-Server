@@ -11,38 +11,38 @@ Accept: *\/*
 
 const net = require('net');
 
-const remoteAddress = "";
+var remoteAddress = "";
 
+var connection = process.argv[2];
 
-const socket = net.connect(80, process.argv[2], () => {
-  console.log('client connected');
-  var remoteAddress = socket.remoteAddress;
-  console.log('remote address is', remoteAddress);
-});
+var port = 80;
 
+if (connection.includes(':')){
+  var port = connection.split(':')[1];
+  connection = connection.split(':')[0];
+}
 
-socket.setEncoding('utf8');
+if (!connection){
+  console.log("that won't work, try this: 'node client.js www.google.com'");
+}
+else{
+  const socket = net.connect(port, connection, () => {
+    console.log('client connected');
+    var remoteAddress = socket.remoteAddress;
+    console.log('remote address is', remoteAddress);
+    });
 
-socket.on('data', function(data){
-  console.log("msg: ",data);
-});
+  socket.setEncoding('utf8');
 
-var chunk = `GET / HTTP/1.1\nHost: ${remoteAddress}\nConnection: close\r\n\r\n`;
-socket.write(chunk);
+  var chunk = `GET / HTTP/1.1\nHost: ${remoteAddress}\nConnection: close\r\n\r\n`;
+  socket.write(chunk);
 
-// process.stdin.setEncoding('utf8');
-// process.stdin.on('readable', () => {
-//   var chunk = "HEAD www.google.com HTTP/1.1\nHost: www.google.com\nUser-agent: node net\nAccept: */*";
-//   if (chunk !== null) {
-//     //process.stdout.write("stdout: "+chunk);
-//     //socket.write("RandoMan"+name+' '+chunk);
-//     socket.write(chunk);
-//   }
-// });
+  socket.on('data', function(data){
+    process.stdout.write(data);
+  });
 
-console.log("checking", process.argv[2]);
+  socket.on('close', () => {
+    console.log("connection closed");
+  });
 
-
-socket.on('close', () => {
-  console.log("connection closed");
-});
+}
