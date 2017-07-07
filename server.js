@@ -22,16 +22,16 @@ const server = net.createServer((c) => {
 
   c.on('data', function(data) {
     process.stdout.write(data);
-    let uri = data.toString().split('\n')[0].split(' ')[1].slice(1);//data buffer to string, split new lines, split on space, then remove '/'
+    let url = data.toString().split('\n')[0].split(' ')[1].slice(1);//data buffer to string, split new lines, split on space, then remove '/'
 
-    //if uri is blank, aka 8080, redir them to index.html
-    if (!uri){
-      uri = "index.html";
+    //if url is blank, aka 8080, redir them to index.html
+    if (!url){
+      url = "index.html";
     }
-    console.log("uri is", uri);
+    console.log("url is", url);
 
-  if (htmlPages.includes(uri)) {
-    var page = fs.readFile(uri, (err, data) => {
+  if (htmlPages.includes(url)) {
+    var page = fs.readFile(url, (err, data) => {
       //console.log(data.toString());
       if (err) throw err;
       var dataLen = data.length;
