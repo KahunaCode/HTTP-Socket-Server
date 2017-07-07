@@ -11,10 +11,13 @@ Accept: *\/*
 
 const net = require('net');
 
+const remoteAddress = "";
 
 
-const socket = net.connect(8080, process.argv[2], () => {
+const socket = net.connect(80, process.argv[2], () => {
   console.log('client connected');
+  var remoteAddress = socket.remoteAddress;
+  console.log('remote address is', remoteAddress);
 });
 
 
@@ -24,7 +27,7 @@ socket.on('data', function(data){
   console.log("msg: ",data);
 });
 
-var chunk = "GET / HTTP/1.1";
+var chunk = `GET / HTTP/1.1\nHost: ${remoteAddress}\nConnection: close\r\n\r\n`;
 socket.write(chunk);
 
 // process.stdin.setEncoding('utf8');
@@ -36,7 +39,6 @@ socket.write(chunk);
 //     socket.write(chunk);
 //   }
 // });
-
 
 console.log("checking", process.argv[2]);
 
