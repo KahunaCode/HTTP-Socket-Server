@@ -17,15 +17,21 @@ var connection = process.argv[2];
 
 var port = 80;
 
-if (connection.includes(':')){
-  var port = connection.split(':')[1];
-  connection = connection.split(':')[0];
-}
-
 if (!connection){
   console.log("that won't work, try this: 'node client.js www.google.com'");
 }
 else{
+
+  if (connection.includes(':')){
+    var toParse = connection;
+    console.log("toparse is ", toParse);
+    port = toParse.split(':')[1];
+    connection = toParse.split(':')[0];
+    if (toParse.includes('/')) {
+      var uri = toParse.split('/')[1];
+      }
+    }
+
   const socket = net.connect(port, connection, () => {
     console.log('client connected');
     var remoteAddress = socket.remoteAddress;
